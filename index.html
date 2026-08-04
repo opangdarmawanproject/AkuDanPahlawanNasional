@@ -5,23 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aku dan Pahlawan Nasional</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 20px 20px;
         }
-        .hero-btn.selected {
-            border-color: #ef4444;
-            background-color: #fef2f2;
-            color: #b91c1c;
-            font-weight: 600;
+        .title-font {
+            font-family: 'Merriweather', serif;
         }
+        .hero-bg {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+        }
+        /* Custom spinner */
         .loader {
             border: 4px solid #f3f3f3;
-            border-top: 4px solid #ef4444;
+            border-top: 4px solid #dc2626;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -31,400 +30,407 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body class="min-h-screen text-gray-800 flex flex-col items-center p-4 sm:p-8">
+<body class="min-h-screen text-slate-800 pb-12">
 
-    <!-- Header -->
-    <header class="w-full max-w-4xl text-center mb-8">
-        <h1 class="text-3xl md:text-5xl font-bold text-red-600 mb-2 shadow-sm drop-shadow-sm">
-            🇮🇩 Aku & Pahlawan Nasional
-        </h1>
-        <p class="text-gray-600 text-sm md:text-base">
-            Abadikan momen imajinatifmu bersama pahlawan bangsa dengan teknologi AI. Ekspresi dan gaya akan berganti secara otomatis setiap kali di-generate!
-        </p>
+    <header class="hero-bg text-white shadow-md">
+        <div class="max-w-4xl mx-auto px-4 py-8 text-center">
+            <h1 class="text-3xl md:text-5xl font-bold title-font mb-2">Aku & Pahlawan Nasional</h1>
+            <p class="text-red-100 md:text-lg text-sm">Abadikan momen imajinatif bersama tokoh-tokoh bersejarah Indonesia.</p>
+        </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-gray-100">
-        
-        <!-- Left Column: Controls -->
-        <div class="w-full md:w-1/2 p-6 bg-gray-50 border-r border-gray-200">
+    <main class="max-w-4xl mx-auto px-4 mt-8">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
             
-            <!-- Upload Section -->
-            <div class="mb-6">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">1. Unggah Foto Kamu</label>
-                <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-100 transition-colors relative overflow-hidden group">
-                    <input type="file" id="file-upload" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/png, image/jpeg, image/jpg">
-                    <div id="upload-placeholder" class="flex flex-col items-center pointer-events-none">
-                        <svg class="w-10 h-10 text-gray-400 mb-2 group-hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                        <p class="text-sm text-gray-500 font-medium">Klik atau seret foto ke sini</p>
-                        <p class="text-xs text-gray-400 mt-1">JPG, PNG (Max 5MB)</p>
-                    </div>
-                    <img id="preview-image" class="hidden w-full h-48 object-cover rounded-lg shadow-sm" src="" alt="Preview">
-                </div>
-            </div>
-
-            <!-- Hero Selection -->
-            <div class="mb-6">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">2. Pilih Pahlawan Nasional</label>
-                <div id="heroes-grid" class="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-2">
-                    <!-- Buttons will be injected here via JS -->
-                </div>
-            </div>
-
-            <!-- Action Button -->
-            <button id="generate-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2" disabled>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                Buat Foto Bersama
-            </button>
-            <p class="text-xs text-gray-400 mt-2 text-center">Gaya & ekspresi akan diacak otomatis setiap klik.</p>
-        </div>
-
-        <!-- Right Column: Result -->
-        <div class="w-full md:w-1/2 p-6 bg-gray-900 text-white flex flex-col justify-center items-center relative min-h-[400px]">
-            
-            <!-- Default State -->
-            <div id="result-placeholder" class="text-center">
-                <div class="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-700">
-                    <svg class="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                </div>
-                <h3 class="text-lg font-medium text-gray-300">Hasil Foto Akan Tampil di Sini</h3>
-                <p class="text-sm text-gray-500 mt-2 max-w-xs mx-auto">Selesaikan langkah 1 & 2, lalu klik tombol "Buat Foto Bersama".</p>
-            </div>
-
-            <!-- Loading State -->
-            <div id="loading-state" class="hidden flex-col items-center justify-center absolute inset-0 bg-gray-900 bg-opacity-90 z-10">
-                <div class="loader mb-4"></div>
-                <h3 class="text-lg font-semibold text-white animate-pulse" id="loading-text">Memanggil Kekuatan AI...</h3>
-                <p class="text-sm text-gray-400 mt-2 text-center px-6">Sedang menyesuaikan wajah, ekspresi, dan suasana sejarah.</p>
-            </div>
-
-            <!-- Result State -->
-            <div id="result-container" class="hidden w-full h-full flex flex-col items-center justify-center">
-                <img id="generated-image" class="max-w-full max-h-[60vh] object-contain rounded-lg shadow-2xl border-4 border-gray-800" src="" alt="Hasil AI">
+            <div class="p-6 md:p-8 border-b border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-8">
                 
-                <div class="mt-6 flex gap-3 w-full max-w-sm">
-                    <button id="download-btn" class="flex-1 bg-white hover:bg-gray-200 text-gray-900 font-semibold py-2 px-4 rounded-lg shadow transition-colors flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        Unduh
-                    </button>
-                    <button id="remix-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-colors flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                        Gaya Lain
-                    </button>
+                <!-- Upload Section -->
+                <div class="space-y-4">
+                    <h2 class="text-xl font-semibold text-slate-700">1. Unggah Fotomu</h2>
+                    <div id="drop-zone" class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center cursor-pointer hover:bg-slate-50 transition-colors relative group">
+                        <input type="file" id="image-upload" accept="image/jpeg, image/png, image/webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div id="upload-placeholder" class="space-y-2 pointer-events-none">
+                            <svg class="mx-auto h-12 w-12 text-slate-400 group-hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <p class="text-sm text-slate-500">Klik atau seret foto ke sini<br>(Maks. saran 5MB)</p>
+                        </div>
+                        <img id="image-preview" class="hidden mx-auto max-h-48 rounded-lg object-contain" alt="Preview">
+                    </div>
+                </div>
+
+                <!-- Selection Section -->
+                <div class="space-y-4">
+                    <h2 class="text-xl font-semibold text-slate-700">2. Pilih Pahlawan</h2>
+                    <select id="hero-select" class="w-full p-3 border border-slate-300 rounded-xl bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-700">
+                        <option value="" disabled selected>-- Pilih Tokoh Pahlawan --</option>
+                        <!-- Options populated by JS -->
+                    </select>
+
+                    <div class="pt-4 space-y-3">
+                        <button id="generate-btn" disabled class="w-full bg-red-600 hover:bg-red-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-xl transition-colors shadow-sm flex justify-center items-center gap-2">
+                            <span>Buat Foto Bersama</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
+
+            <div id="output-section" class="p-6 md:p-8 bg-slate-50 hidden flex-col items-center justify-center min-h-[400px]">
+                
+                <!-- Loading State -->
+                <div id="loading-state" class="hidden flex-col items-center space-y-4">
+                    <div class="loader"></div>
+                    <p id="loading-text" class="text-slate-600 font-medium animate-pulse">AI sedang memproses gambar Anda...</p>
+                    <p class="text-xs text-slate-400 text-center max-w-xs">Proses ini mungkin memakan waktu hingga 30 detik. Mohon tunggu.</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="error-state" class="hidden bg-red-50 text-red-600 p-4 rounded-xl border border-red-200 text-center w-full max-w-md">
+                    <svg class="w-8 h-8 mx-auto mb-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <p id="error-message" class="font-medium">Terjadi kesalahan.</p>
+                    <button id="retry-btn" class="mt-3 text-sm underline hover:text-red-800">Coba Lagi</button>
+                </div>
+
+                <!-- Result State -->
+                <div id="result-state" class="hidden w-full flex-col items-center space-y-6">
+                    <div class="relative group w-full max-w-2xl">
+                        <img id="result-image" class="w-full h-auto rounded-xl shadow-lg border-4 border-white" alt="Hasil Foto Bersama Pahlawan">
+                        
+                        <!-- Download Overlay Button -->
+                        <a id="download-link" href="#" download="Aku_dan_Pahlawan.png" class="absolute bottom-4 right-4 bg-white/90 backdrop-blur text-slate-800 p-2 rounded-lg shadow hover:bg-white transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            <span class="text-sm font-semibold pr-1">Simpan</span>
+                        </a>
+                    </div>
+                    
+                    <div class="text-center space-y-2">
+                        <p id="result-description" class="text-sm text-slate-600 italic max-w-lg mx-auto">Suasana dan pose disesuaikan otomatis oleh AI.</p>
+                        
+                        <button id="randomize-btn" class="mt-4 bg-slate-800 hover:bg-slate-900 text-white font-medium py-2 px-6 rounded-lg transition-colors inline-flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                            Ganti Gaya & Ekspresi
+                        </button>
+                    </div>
+                </div>
+
+            </div>
         </div>
+        
+        <p class="text-center text-slate-400 text-xs mt-6">
+            Diberdayakan oleh Gemini AI. Hasil gambar merupakan manipulasi digital (AI-Generated).
+        </p>
     </main>
 
-    <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-800 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50">
-        <span id="toast-icon">ℹ️</span>
-        <span id="toast-message" class="font-medium text-sm">Pesan di sini</span>
-    </div>
-
     <script>
-        // --- State Variables ---
-        let uploadedFile = null;
-        let uploadedBase64 = null;
-        let uploadedMimeType = null;
-        let selectedHero = null;
-
+        // --- Data Definitions ---
         const HEROES = [
-            "Ir. Soekarno",
-            "Mohammad Hatta",
-            "Jenderal Sudirman",
-            "R.A. Kartini",
-            "Ki Hajar Dewantara",
-            "Cut Nyak Dien",
-            "Pangeran Diponegoro",
-            "Kapitan Pattimura",
-            "Tuanku Imam Bonjol",
-            "Bung Tomo"
+            { id: 'soekarno', name: 'Ir. Soekarno', context: 'Gaya vintage tahun 1940-an, pakaian formal kenegaraan atau peci hitam khas Soekarno, suasana proklamasi atau pidato kebangsaan.' },
+            { id: 'hatta', name: 'Mohammad Hatta', context: 'Gaya vintage tahun 1940-an, kacamata bulat khas, pakaian formal rapi, suasana cendekiawan atau perundingan bersejarah.' },
+            { id: 'sudirman', name: 'Jenderal Sudirman', context: 'Suasana gerilya tahun 1940-an, memakai mantel panjang atau blangkon, latar belakang hutan atau alam terbuka, suasana militer perjuangan.' },
+            { id: 'kartini', name: 'R.A. Kartini', context: 'Suasana klasik akhir abad 19, memakai kebaya tradisional Jawa, latar belakang interior rumah kayu klasik atau ruang baca.' },
+            { id: 'cutnyakdien', name: 'Cut Nyak Dien', context: 'Suasana perjuangan Aceh abad 19, pakaian tradisional Aceh, wajah tegas pejuang, latar belakang alam atau medan pertempuran.' },
+            { id: 'diponegoro', name: 'Pangeran Diponegoro', context: 'Suasana Perang Jawa 1800-an, memakai sorban dan jubah putih, latar belakang bernuansa tradisional Jawa atau pedesaan.' },
+            { id: 'kihajar', name: 'Ki Hajar Dewantara', context: 'Suasana pendidikan masa kolonial, pakaian tradisional Jawa rapi atau jas era Belanda, latar belakang ruang kelas atau pendopo.' },
+            { id: 'pattimura', name: 'Kapitan Pattimura', context: 'Suasana perjuangan Maluku 1800-an, membawa parang salawaku, latar belakang pesisir atau benteng tropis.' },
+            { id: 'imambonjol', name: 'Tuanku Imam Bonjol', context: 'Suasana Perang Padri, pakaian ulama putih bersorban khas Minangkabau, latar belakang perbukitan Sumatera.' },
+            { id: 'marthachristina', name: 'Martha Christina Tiahahu', context: 'Suasana perjuangan Maluku, sosok pejuang wanita muda dengan rambut terurai, latar belakang alam tropis atau medan perang.' }
         ];
 
-        // Arrays for randomizing the AI Prompt to ensure diverse outputs
-        const POSES_AND_EXPRESSIONS = [
-            "tersenyum hangat dan berjabat tangan dengan bersahabat",
-            "berdiri berdampingan melihat ke arah depan dengan tatapan visioner dan heroik",
-            "memberikan hormat (salute) dengan ekspresi patriotik dan serius",
-            "sedang berbincang santai dengan tawa ringan yang natural",
-            "berpose formal menghadap kamera layaknya foto dokumentasi sejarah klasik",
-            "merangkul bahu dengan hangat menunjukkan persahabatan lintas generasi",
-            "duduk santai bersama sambil menunjuk sebuah peta atau dokumen penting",
-            "berpose semangat dengan kepalan tangan di udara memperjuangkan kemerdekaan"
+        const POSES = [
+            "tersenyum hangat ke arah kamera secara berdampingan",
+            "menatap penuh tekad ke arah cakrawala bersama",
+            "berjabat tangan dengan akrab",
+            "sedang berdiskusi serius mengenai masa depan bangsa",
+            "berpose gagah dan heroik menghadap depan",
+            "saling merangkul pundak dengan penuh persahabatan",
+            "tersenyum simpul dengan pose formal dan berwibawa",
+            "berdiri tegak bersisian dengan ekspresi bangga",
+            "tampak sedang berjalan bersama sambil berbincang santai",
+            "berpose klasik ala foto studio zaman dahulu dengan ekspresi tenang"
         ];
 
-        const ATMOSPHERES = [
-            "suasana kemerdekaan Indonesia era 1940-an dengan warna vintage",
-            "latar belakang kantor kepresidenan atau ruang rapat formal yang elegan",
-            "suasana alam Indonesia yang indah, tropis, dan damai",
-            "latar belakang heroik di medan perjuangan dengan efek sinematik dramatis",
-            "suasana pedesaan tradisional nusantara yang tenang",
-            "studio foto klasik tahun lawas dengan pencahayaan monokrom/sepia artistik",
-            "suasana keramaian rakyat yang sedang merayakan kemerdekaan di latar belakang"
-        ];
+        // --- State Variables ---
+        let base64UploadedImage = null; // Stored WITHOUT data URL prefix
+        let originalMimeType = null;
+        let isProcessing = false;
 
         // --- DOM Elements ---
-        const fileUpload = document.getElementById('file-upload');
+        const imageUploadInput = document.getElementById('image-upload');
         const dropZone = document.getElementById('drop-zone');
         const uploadPlaceholder = document.getElementById('upload-placeholder');
-        const previewImage = document.getElementById('preview-image');
-        const heroesGrid = document.getElementById('heroes-grid');
+        const imagePreview = document.getElementById('image-preview');
+        const heroSelect = document.getElementById('hero-select');
         const generateBtn = document.getElementById('generate-btn');
+        const outputSection = document.getElementById('output-section');
         
-        const resultPlaceholder = document.getElementById('result-placeholder');
         const loadingState = document.getElementById('loading-state');
-        const resultContainer = document.getElementById('result-container');
-        const generatedImage = document.getElementById('generated-image');
-        const downloadBtn = document.getElementById('download-btn');
-        const remixBtn = document.getElementById('remix-btn');
         const loadingText = document.getElementById('loading-text');
+        const errorState = document.getElementById('error-state');
+        const errorMessage = document.getElementById('error-message');
+        const retryBtn = document.getElementById('retry-btn');
+        
+        const resultState = document.getElementById('result-state');
+        const resultImage = document.getElementById('result-image');
+        const downloadLink = document.getElementById('download-link');
+        const resultDescription = document.getElementById('result-description');
+        const randomizeBtn = document.getElementById('randomize-btn');
 
         // --- Initialization ---
-        function initHeroesGrid() {
+        function init() {
+            // Populate select
             HEROES.forEach(hero => {
-                const btn = document.createElement('button');
-                btn.className = 'hero-btn border border-gray-200 rounded-lg p-3 text-sm text-left text-gray-700 hover:bg-gray-50 transition-colors w-full truncate';
-                btn.textContent = hero;
-                btn.onclick = () => selectHero(hero, btn);
-                heroesGrid.appendChild(btn);
+                const option = document.createElement('option');
+                option.value = hero.id;
+                option.textContent = hero.name;
+                heroSelect.appendChild(option);
             });
+
+            // Event Listeners
+            imageUploadInput.addEventListener('change', handleFileSelect);
+            heroSelect.addEventListener('change', checkReadiness);
+            generateBtn.addEventListener('click', () => processImage(false));
+            randomizeBtn.addEventListener('click', () => processImage(true));
+            retryBtn.addEventListener('click', () => processImage(false));
+            
+            // Drag and drop cosmetics
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.add('bg-red-50', 'border-red-400'), false);
+            });
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.remove('bg-red-50', 'border-red-400'), false);
+            });
+            dropZone.addEventListener('drop', handleDrop, false);
         }
-        initHeroesGrid();
 
-        // --- Event Listeners: File Upload ---
-        fileUpload.addEventListener('change', handleFileSelect);
-        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files && files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+
         function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+            if (e.target.files && e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        }
 
-            // Validation
+        function handleFile(file) {
             if (!file.type.startsWith('image/')) {
-                showToast('Hanya file gambar yang diperbolehkan!', '❌');
-                return;
-            }
-            if (file.size > 5 * 1024 * 1024) {
-                showToast('Ukuran foto terlalu besar. Maksimal 5MB.', '⚠️');
+                showError("Mohon unggah file gambar yang valid (JPG/PNG).");
                 return;
             }
 
-            uploadedFile = file;
-            uploadedMimeType = file.type;
-
+            // Client-side resize to prevent huge payloads
             const reader = new FileReader();
             reader.onload = function(event) {
-                // Save base64 Data (Remove the data:image... prefix for the API)
-                const dataUrl = event.target.result;
-                uploadedBase64 = dataUrl.split(',')[1];
-                
-                // Show Preview
-                previewImage.src = dataUrl;
-                previewImage.classList.remove('hidden');
-                uploadPlaceholder.classList.add('hidden');
-                dropZone.classList.remove('border-dashed', 'p-6');
-                dropZone.classList.add('p-1'); // Less padding for preview
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 1024;
+                    const MAX_HEIGHT = 1024;
+                    let width = img.width;
+                    let height = img.height;
 
-                checkReadyState();
-            };
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Convert to base64, force JPEG for consistency
+                    originalMimeType = 'image/jpeg';
+                    const dataUrl = canvas.toDataURL(originalMimeType, 0.8);
+                    
+                    // Update UI
+                    imagePreview.src = dataUrl;
+                    imagePreview.classList.remove('hidden');
+                    uploadPlaceholder.classList.add('hidden');
+                    
+                    // Store pure base64 without prefix for Gemini API
+                    base64UploadedImage = dataUrl.split(',')[1];
+                    checkReadiness();
+                }
+                img.src = event.target.result;
+            }
             reader.readAsDataURL(file);
         }
 
-        // --- Event Listeners: Hero Selection ---
-        function selectHero(heroName, btnElement) {
-            selectedHero = heroName;
-            
-            // Remove selected class from all
-            document.querySelectorAll('.hero-btn').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-            
-            // Add to clicked
-            btnElement.classList.add('selected');
-            checkReadyState();
-        }
-
-        // Enable button if both image and hero are selected
-        function checkReadyState() {
-            if (uploadedBase64 && selectedHero) {
+        function checkReadiness() {
+            if (base64UploadedImage && heroSelect.value) {
                 generateBtn.disabled = false;
             } else {
                 generateBtn.disabled = true;
             }
         }
 
-        // --- Core Logic: Image Generation with Gemini API ---
-        generateBtn.addEventListener('click', generateWithAI);
-        remixBtn.addEventListener('click', generateWithAI);
+        const API_KEY = ""; // Injected by the platform
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=${API_KEY}`;
 
-        async function generateWithAI() {
-            if (!uploadedBase64 || !selectedHero) return;
+        function getRandomPose() {
+            return POSES[Math.floor(Math.random() * POSES.length)];
+        }
 
-            // UI State: Loading
-            resultPlaceholder.classList.add('hidden');
-            resultContainer.classList.add('hidden');
-            loadingState.classList.remove('hidden');
-            loadingState.classList.add('flex');
+        function buildPrompt(heroId, pose) {
+            const hero = HEROES.find(h => h.id === heroId);
+            return `Tugas: Edit foto yang dilampirkan ini.
+Instruksi Penting: 
+1. PERTAHANKAN wajah dan sosok orang asli yang ada di dalam foto unggahan. Jangan ubah identitas mereka.
+2. TAMBAHKAN sosok Pahlawan Nasional Indonesia, ${hero.name}, berdiri atau berada di samping orang asli tersebut.
+3. Wajah ${hero.name} HARUS sangat akurat secara historis berdasarkan lukisan atau foto sejarah.
+4. Suasana dan Latar Belakang: ${hero.context}
+5. Pose dan Ekspresi Mereka Berdua: ${pose}.
+6. Buat agar pencahayaan dan bayangan terlihat menyatu sehingga tampak seperti sebuah foto bersejarah atau lukisan realistis yang mulus antara orang asli dan pahlawan.`;
+        }
+
+        async function fetchWithRetry(url, options, maxRetries = 3) {
+            let delay = 1000;
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        const errText = await response.text();
+                        if (response.status === 429) {
+                            // Throttled
+                            console.warn(`Rate limited. Retrying in ${delay}ms...`);
+                            await new Promise(res => setTimeout(res, delay));
+                            delay *= 2; // Exponential backoff
+                            continue;
+                        }
+                        throw new Error(`API Error ${response.status}: ${errText}`);
+                    }
+                    return await response.json();
+                } catch (err) {
+                    if (i === maxRetries - 1) throw err;
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        async function processImage(isRandomize = false) {
+            if (isProcessing || !base64UploadedImage) return;
+
+            const selectedHeroId = heroSelect.value;
+            if (!selectedHeroId) return;
+
+            isProcessing = true;
             generateBtn.disabled = true;
+            randomizeBtn.disabled = true;
             
-            // Randomize styling for variety
-            const randomPose = POSES_AND_EXPRESSIONS[Math.floor(Math.random() * POSES_AND_EXPRESSIONS.length)];
-            const randomAtmosphere = ATMOSPHERES[Math.floor(Math.random() * ATMOSPHERES.length)];
-            
-            const promptText = `Secara akurat edit foto ini. Tambahkan Pahlawan Nasional Indonesia bernama ${selectedHero} berdiri di sebelah orang yang ada di dalam foto asli ini. 
-Wajah ${selectedHero} HARUS sangat akurat, valid, dan sangat mirip dengan referensi sejarah aslinya. 
-Buat mereka berdua berpose: ${randomPose}. 
-Atur latar belakang dan suasananya menjadi: ${randomAtmosphere}. 
-Pastikan wajah orang di foto asli tetap terjaga kemiripannya. Render dengan kualitas fotorealistik tinggi, pencahayaan yang natural, dan proporsi tubuh yang masuk akal seolah ini adalah foto asli.`;
+            // UI State: Loading
+            outputSection.classList.remove('hidden');
+            outputSection.classList.add('flex');
+            loadingState.classList.remove('hidden');
+            errorState.classList.add('hidden');
+            resultState.classList.add('hidden');
 
-            const loadingPhrases = [
-                `Menghadirkan ${selectedHero}...`,
-                `Menyesuaikan pose dan ekspresi...`,
-                `Menciptakan suasana sejarah...`,
-                `Memproses keajaiban AI...`
-            ];
+            const pose = getRandomPose();
+            const promptText = buildPrompt(selectedHeroId, pose);
             
-            let phraseIndex = 0;
-            const phraseInterval = setInterval(() => {
-                phraseIndex = (phraseIndex + 1) % loadingPhrases.length;
-                loadingText.innerText = loadingPhrases[phraseIndex];
-            }, 2000);
+            if (isRandomize) {
+                loadingText.textContent = "Mencari gaya dan ekspresi baru...";
+            } else {
+                loadingText.textContent = "AI sedang menyatukan foto Anda dengan Pahlawan...";
+            }
+
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [
+                        { text: promptText },
+                        {
+                            inlineData: {
+                                mimeType: originalMimeType || "image/jpeg",
+                                data: base64UploadedImage
+                            }
+                        }
+                    ]
+                }],
+                generationConfig: {
+                    responseModalities: ['IMAGE'] // We only need the image back
+                }
+            };
 
             try {
-                // Environment API Key logic handled by platform
-                const apiKey = ""; 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=${apiKey}`;
-                
-                const payload = {
-                    contents: [{
-                        role: "user",
-                        parts: [
-                            { text: promptText },
-                            {
-                                inlineData: {
-                                    mimeType: uploadedMimeType,
-                                    data: uploadedBase64
-                                }
-                            }
-                        ]
-                    }],
-                    generationConfig: {
-                        responseModalities: ['IMAGE']
-                    }
-                };
-
-                const response = await fetch(apiUrl, {
+                const result = await fetchWithRetry(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) {
-                    throw new Error(`API Error: ${response.status}`);
-                }
+                // Parse the response based on gemini-3.1-flash-image-preview structure
+                const part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+                
+                if (part && part.inlineData && part.inlineData.data) {
+                    const mimeType = part.inlineData.mimeType || 'image/jpeg';
+                    const base64Data = part.inlineData.data;
+                    const imageUrl = `data:${mimeType};base64,${base64Data}`;
+                    
+                    // Show Result
+                    resultImage.src = imageUrl;
+                    downloadLink.href = imageUrl;
+                    
+                    const hero = HEROES.find(h => h.id === selectedHeroId);
+                    resultDescription.innerHTML = `Bersama <strong>${hero.name}</strong>.<br>Ekspresi: <em>"${pose}"</em>`;
 
-                const result = await response.json();
-                
-                // Extract Image from Response
-                const imagePart = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-                
-                if (imagePart && imagePart.inlineData && imagePart.inlineData.data) {
-                    const generatedBase64 = imagePart.inlineData.data;
-                    const mimeType = imagePart.inlineData.mimeType || 'image/jpeg';
-                    
-                    // Display Result
-                    const imageUrl = `data:${mimeType};base64,${generatedBase64}`;
-                    generatedImage.src = imageUrl;
-                    
-                    // Update UI
-                    loadingState.classList.remove('flex');
                     loadingState.classList.add('hidden');
-                    resultContainer.classList.remove('hidden');
-                    resultContainer.classList.add('flex');
+                    resultState.classList.remove('hidden');
+                    resultState.classList.add('flex');
                     
-                    showToast('Berhasil membuat foto!', '✅');
+                    // Scroll to result nicely
+                    outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
                 } else {
-                    throw new Error("Format respons tidak mengandung gambar.");
+                    throw new Error("Format respons API tidak sesuai atau gambar gagal dibuat.");
                 }
 
             } catch (error) {
-                console.error("AI Generation Error:", error);
-                
-                // Update UI back to normal but show error
-                loadingState.classList.remove('flex');
-                loadingState.classList.add('hidden');
-                
-                // If this is the first generation attempt, go back to placeholder
-                if (!generatedImage.src || generatedImage.src === window.location.href) {
-                    resultPlaceholder.classList.remove('hidden');
-                } else {
-                    resultContainer.classList.remove('hidden');
-                    resultContainer.classList.add('flex');
-                }
-                
-                showToast('Gagal memproses gambar. Silakan coba lagi.', '❌');
+                console.error("Generation Error:", error);
+                showError("Gagal memproses gambar. Layanan mungkin sedang sibuk atau terjadi kesalahan sistem. Silakan coba lagi.");
             } finally {
-                clearInterval(phraseInterval);
-                loadingText.innerText = "Memanggil Kekuatan AI...";
+                isProcessing = false;
                 generateBtn.disabled = false;
+                randomizeBtn.disabled = false;
             }
         }
 
-        // --- Helper: Download Image ---
-        downloadBtn.addEventListener('click', () => {
-            const imgSrc = generatedImage.src;
-            if (!imgSrc || imgSrc === window.location.href) return;
+        function showError(message) {
+            loadingState.classList.add('hidden');
+            resultState.classList.add('hidden');
             
-            const link = document.createElement('a');
-            link.href = imgSrc;
-            const heroFileName = selectedHero.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            link.download = `Aku_dan_${heroFileName}_AI.jpg`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showToast('Foto mulai diunduh', '📥');
-        });
-
-        // --- Helper: Toast Notification System ---
-        function showToast(message, icon = 'ℹ️') {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-message').innerText = message;
-            document.getElementById('toast-icon').innerText = icon;
+            outputSection.classList.remove('hidden');
+            outputSection.classList.add('flex');
             
-            // Animate in
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            
-            // Hide after 3s
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
+            errorState.classList.remove('hidden');
+            errorMessage.textContent = message;
         }
 
-        // --- Drag and Drop Logic for Upload Zone ---
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('bg-gray-100', 'border-red-400');
-        });
-        
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('bg-gray-100', 'border-red-400');
-        });
-        
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('bg-gray-100', 'border-red-400');
-            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                fileUpload.files = e.dataTransfer.files;
-                handleFileSelect({ target: { files: e.dataTransfer.files } });
-            }
-        });
+        // Run initialization
+        init();
     </script>
 </body>
 </html>
