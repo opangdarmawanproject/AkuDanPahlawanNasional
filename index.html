@@ -34,12 +34,35 @@
 </head>
 <body class="min-h-screen text-slate-800 pb-12">
 
-    <header class="hero-bg text-white shadow-md">
+    <header class="hero-bg text-white shadow-md relative">
+        <button id="settings-btn" class="absolute top-4 right-4 text-red-100 hover:text-white transition-colors p-2" title="Pengaturan Web Frame">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
         <div class="max-w-4xl mx-auto px-4 py-8 text-center">
             <h1 class="text-3xl md:text-5xl font-bold title-font mb-2">Aku & Pahlawan Nasional</h1>
             <p class="text-red-100 md:text-lg text-sm">Abadikan momen imajinatif bersama tokoh-tokoh bersejarah Indonesia.</p>
         </div>
     </header>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
+            <button id="close-settings" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-xl font-bold text-slate-800 mb-4">Pengaturan Web Frame</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">API Key Gemini Pengguna</label>
+                    <input type="password" id="api-key-input" class="w-full p-3 border border-slate-300 rounded-xl bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Kosongkan jika di dalam Canvas AI">
+                    <p class="text-xs text-slate-500 mt-2">Jika Anda mem-publish web ini ke GitHub atau hosting lain, <b>tiap pengguna wajib mengisi API Key milik mereka sendiri</b> di sini agar sistem berfungsi, layaknya akun personal.</p>
+                </div>
+                <button id="save-settings" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 px-6 rounded-xl transition-colors">
+                    Simpan & Terapkan
+                </button>
+            </div>
+        </div>
+    </div>
 
     <main class="max-w-4xl mx-auto px-4 mt-8">
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -178,6 +201,12 @@
         const resultDescription = document.getElementById('result-description');
         const randomizeBtn = document.getElementById('randomize-btn');
 
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsModal = document.getElementById('settings-modal');
+        const closeSettings = document.getElementById('close-settings');
+        const saveSettings = document.getElementById('save-settings');
+        const apiKeyInput = document.getElementById('api-key-input');
+
         // --- Initialization ---
         function init() {
             // Populate select
@@ -195,6 +224,36 @@
             randomizeBtn.addEventListener('click', () => processImage(true));
             retryBtn.addEventListener('click', () => processImage(false));
             
+            // Settings Listeners
+            settingsBtn.addEventListener('click', () => {
+                apiKeyInput.value = localStorage.getItem('gemini_api_key') || "";
+                settingsModal.classList.remove('hidden');
+            });
+            
+            closeSettings.addEventListener('click', () => {
+                settingsModal.classList.add('hidden');
+            });
+            
+            saveSettings.addEventListener('click', () => {
+                const val = apiKeyInput.value.trim();
+                if (val) {
+                    localStorage.setItem('gemini_api_key', val);
+                } else {
+                    localStorage.removeItem('gemini_api_key');
+                }
+                
+                saveSettings.textContent = "Berhasil Disimpan!";
+                saveSettings.classList.replace('bg-slate-800', 'bg-green-600');
+                saveSettings.classList.replace('hover:bg-slate-900', 'hover:bg-green-700');
+                
+                setTimeout(() => {
+                    settingsModal.classList.add('hidden');
+                    saveSettings.textContent = "Simpan & Terapkan";
+                    saveSettings.classList.replace('bg-green-600', 'bg-slate-800');
+                    saveSettings.classList.replace('hover:bg-green-700', 'hover:bg-slate-900');
+                }, 1000);
+            });
+
             // Drag and drop cosmetics
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                 dropZone.addEventListener(eventName, preventDefaults, false);
@@ -287,8 +346,11 @@
             }
         }
 
-        const API_KEY = ""; // Injected by the platform
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=${API_KEY}`;
+        function getApiUrl() {
+            // Retrieve key from local storage (if hosted independently) or empty (for Canvas autoinject)
+            const storedKey = localStorage.getItem('gemini_api_key') || "";
+            return `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=${storedKey}`;
+        }
 
         function getRandomPose() {
             return POSES[Math.floor(Math.random() * POSES.length)];
@@ -313,6 +375,12 @@ Instruksi Penting:
                     const response = await fetch(url, options);
                     if (!response.ok) {
                         const errText = await response.text();
+                        
+                        // Handle missing/invalid API Key gracefully for external hosting (GitHub Pages)
+                        if (response.status === 400 && (errText.includes("API_KEY_INVALID") || errText.toLowerCase().includes("api key not valid"))) {
+                            throw new Error("API_KEY_ERROR");
+                        }
+                        
                         if (response.status === 429) {
                             // Throttled
                             console.warn(`Rate limited. Retrying in ${delay}ms...`);
@@ -376,7 +444,7 @@ Instruksi Penting:
             };
 
             try {
-                const result = await fetchWithRetry(API_URL, {
+                const result = await fetchWithRetry(getApiUrl(), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -410,7 +478,12 @@ Instruksi Penting:
 
             } catch (error) {
                 console.error("Generation Error:", error);
-                showError("Gagal memproses gambar. Layanan mungkin sedang sibuk atau terjadi kesalahan sistem. Silakan coba lagi.");
+                
+                if (error.message === "API_KEY_ERROR") {
+                    showError("Web berjalan di luar Canvas. Silakan klik ikon Pengaturan (Gerigi) di sudut kanan atas dan isi API Key Gemini Anda.");
+                } else {
+                    showError("Gagal memproses gambar. Layanan mungkin sedang sibuk atau terjadi kesalahan sistem. Silakan coba lagi.");
+                }
             } finally {
                 isProcessing = false;
                 generateBtn.disabled = false;
