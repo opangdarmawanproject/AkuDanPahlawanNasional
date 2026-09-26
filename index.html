@@ -32,73 +32,90 @@
         }
     </style>
 </head>
-<body class="min-h-screen text-slate-800 pb-12 relative">
+<body class="min-h-screen text-slate-800 pb-12 relative overflow-x-hidden">
 
-    <!-- Login Screen Overlay (Gatekeeper) -->
-    <div id="login-screen" class="fixed inset-0 z-[100] bg-slate-900/95 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-500">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-6 transform transition-all text-center">
-            <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
+    <div id="login-screen" class="fixed inset-0 z-[100] bg-slate-900/90 flex items-center justify-center p-4 backdrop-blur-md transition-all duration-500">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-6 transform transition-all text-center border border-slate-100 relative">
+            <div class="w-20 h-20 bg-gradient-to-tr from-red-600 to-amber-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-red-500/20 text-white">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
             </div>
             <div>
-                <h2 class="text-3xl font-bold title-font text-slate-800 mb-2">Login Aplikasi</h2>
-                <p class="text-slate-500 text-sm leading-relaxed">Silakan masukkan Gemini API Key Anda untuk mulai memproses foto bersama pahlawan.</p>
+                <h2 class="text-2xl md:text-3xl font-bold title-font text-slate-800 mb-1">Masuk ke Gemini AI</h2>
+                <p class="text-slate-500 text-xs md:text-sm leading-relaxed">Hubungkan Gemini API Key Anda. Setelah login tersimpan, aplikasi otomatis langsung siap digunakan.</p>
             </div>
             
-            <div class="space-y-4 pt-2">
-                <div class="relative">
-                    <input type="password" id="login-api-key" class="w-full p-4 border-2 border-slate-200 rounded-xl bg-slate-50 focus:outline-none focus:border-red-500 focus:bg-white transition-colors text-center text-lg tracking-widest" placeholder="AIzaSy...">
-                    <p id="login-error" class="text-red-500 text-xs mt-2 hidden font-medium">API Key tidak boleh kosong!</p>
+            <div class="space-y-4 pt-1 text-left">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Gemini API Key</label>
+                    <div class="relative">
+                        <input type="password" id="login-api-key" class="w-full py-3.5 px-4 border-2 border-slate-200 rounded-xl bg-slate-50 focus:outline-none focus:border-red-500 focus:bg-white transition-all text-sm font-mono" placeholder="AIzaSy...">
+                        <button type="button" id="toggle-key-visibility" class="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </button>
+                    </div>
+                    <p id="login-error" class="text-red-500 text-xs mt-1.5 hidden font-medium flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5 inline" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                        <span id="login-error-text">API Key tidak valid atau kosong!</span>
+                    </p>
                 </div>
-                <button id="login-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:shadow-red-600/30 flex items-center justify-center gap-2">
-                    <span>Masuk & Mulai</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+
+                <button id="login-btn" class="w-full bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-semibold py-3.5 px-6 rounded-xl transition-all shadow-lg hover:shadow-red-600/30 flex items-center justify-center gap-2">
+                    <span id="login-btn-text">Masuk & Sambungkan</span>
+                    <svg id="login-btn-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </button>
             </div>
 
-            <div class="pt-6 border-t border-slate-100">
-                <button id="canvas-login-btn" class="text-sm text-slate-400 hover:text-slate-600 transition-colors underline">
-                    Atau lanjutkan tanpa Key (Khusus di dalam AI Canvas)
+            <div class="pt-4 border-t border-slate-100 flex flex-col gap-2">
+                <button id="canvas-login-btn" class="text-xs text-slate-500 hover:text-slate-800 transition-colors py-1.5 px-3 rounded-lg bg-slate-100 hover:bg-slate-200">
+                    Mode Otomatis Canvas AI (Tanpa Perlu Key)
                 </button>
+                <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="text-[11px] text-red-600 hover:underline">
+                    Dapatkan Gemini API Key Gratis di sini &rarr;
+                </a>
             </div>
         </div>
     </div>
 
     <header class="hero-bg text-white shadow-md relative">
-        <button id="settings-btn" class="absolute top-4 right-4 text-red-100 hover:text-white transition-colors p-2" title="Pengaturan Web Frame">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-        </button>
+        <div class="absolute top-4 right-4 flex items-center gap-2">
+            <span id="user-status-pill" class="text-xs px-2.5 py-1 rounded-full bg-red-800/80 border border-red-400/40 text-red-100 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span id="user-status-text">Menyambungkan...</span>
+            </span>
+            <button id="settings-btn" class="text-red-100 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Pengaturan Akun & Key">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+        </div>
         <div class="max-w-4xl mx-auto px-4 py-8 text-center">
             <h1 class="text-3xl md:text-5xl font-bold title-font mb-2">Aku & Pahlawan Nasional</h1>
             <p class="text-red-100 md:text-lg text-sm">Abadikan momen imajinatif bersama tokoh-tokoh bersejarah Indonesia.</p>
         </div>
     </header>
 
-    <!-- Settings Modal -->
     <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
             <button id="close-settings" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            <h3 class="text-xl font-bold text-slate-800 mb-4">Pengaturan Web Frame</h3>
+            <h3 class="text-xl font-bold text-slate-800 mb-4">Pengaturan Akun Gemini</h3>
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">API Key Gemini Pengguna</label>
-                    <input type="password" id="api-key-input" class="w-full p-3 border border-slate-300 rounded-xl bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Kosongkan jika di dalam Canvas AI">
-                    <p class="text-xs text-slate-500 mt-2">Jika Anda mem-publish web ini ke GitHub atau hosting lain, <b>tiap pengguna wajib mengisi API Key milik mereka sendiri</b> di sini agar sistem berfungsi, layaknya akun personal.</p>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">API Key Gemini Aktif</label>
+                    <input type="password" id="api-key-input" class="w-full p-3 border border-slate-300 rounded-xl bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 font-mono text-sm" placeholder="AIzaSy...">
+                    <p class="text-xs text-slate-500 mt-2">Kunci disimpan aman di peramban (localStorage) Anda dan digunakan langsung untuk request AI.</p>
                 </div>
                 <button id="save-settings" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 px-6 rounded-xl transition-colors">
-                    Simpan & Terapkan
+                    Simpan Perubahan
                 </button>
-                <button id="logout-btn" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-3 px-6 rounded-xl transition-colors border border-red-200 mt-2">
-                    Logout / Hapus Key
+                <button id="logout-btn" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-3 px-6 rounded-xl transition-colors border border-red-200">
+                    Keluar / Hapus Kunci
                 </button>
             </div>
         </div>
     </div>
 
     <main class="max-w-4xl mx-auto px-4 mt-8">
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
             
             <div class="p-6 md:p-8 border-b border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-8">
                 
@@ -134,6 +151,7 @@
                 </div>
             </div>
 
+            <!-- Output Section -->
             <div id="output-section" class="p-6 md:p-8 bg-slate-50 hidden flex-col items-center justify-center min-h-[400px]">
                 
                 <!-- Loading State -->
@@ -155,7 +173,6 @@
                     <div class="relative group w-full max-w-2xl">
                         <img id="result-image" class="w-full h-auto rounded-xl shadow-lg border-4 border-white" alt="Hasil Foto Bersama Pahlawan">
                         
-                        <!-- Download Overlay Button -->
                         <a id="download-link" href="#" download="Aku_dan_Pahlawan.png" class="absolute bottom-4 right-4 bg-white/90 backdrop-blur text-slate-800 p-2 rounded-lg shadow hover:bg-white transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                             <span class="text-sm font-semibold pr-1">Simpan</span>
@@ -181,7 +198,6 @@
     </main>
 
     <script>
-        // --- Data Definitions ---
         const HEROES = [
             { id: 'soekarno', name: 'Ir. Soekarno', context: 'Gaya vintage tahun 1940-an, pakaian formal kenegaraan atau peci hitam khas Soekarno, suasana proklamasi atau pidato kebangsaan.' },
             { id: 'hatta', name: 'Mohammad Hatta', context: 'Gaya vintage tahun 1940-an, kacamata bulat khas, pakaian formal rapi, suasana cendekiawan atau perundingan bersejarah.' },
@@ -208,20 +224,36 @@
             "berpose klasik ala foto studio zaman dahulu dengan ekspresi tenang"
         ];
 
-        // --- State Variables ---
-        let base64UploadedImage = null; // Stored WITHOUT data URL prefix
+        let base64UploadedImage = null; 
         let originalMimeType = null;
         let isProcessing = false;
 
-        // --- STREAMING_CHUNK: DOM Elements ---
+        // Login & Setting Elements
+        const loginScreen = document.getElementById('login-screen');
+        const loginApiKey = document.getElementById('login-api-key');
+        const loginBtnScreen = document.getElementById('login-btn');
+        const canvasLoginBtn = document.getElementById('canvas-login-btn');
+        const loginError = document.getElementById('login-error');
+        const loginErrorText = document.getElementById('login-error-text');
+        const toggleKeyVisibility = document.getElementById('toggle-key-visibility');
+        const userStatusText = document.getElementById('user-status-text');
+        
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsModal = document.getElementById('settings-modal');
+        const closeSettings = document.getElementById('close-settings');
+        const saveSettings = document.getElementById('save-settings');
+        const logoutBtn = document.getElementById('logout-btn');
+        const apiKeyInput = document.getElementById('api-key-input');
+
+        // Main App Elements
         const imageUploadInput = document.getElementById('image-upload');
         const dropZone = document.getElementById('drop-zone');
         const uploadPlaceholder = document.getElementById('upload-placeholder');
         const imagePreview = document.getElementById('image-preview');
         const heroSelect = document.getElementById('hero-select');
         const generateBtn = document.getElementById('generate-btn');
-        const outputSection = document.getElementById('output-section');
         
+        const outputSection = document.getElementById('output-section');
         const loadingState = document.getElementById('loading-state');
         const loadingText = document.getElementById('loading-text');
         const errorState = document.getElementById('error-state');
@@ -234,21 +266,7 @@
         const resultDescription = document.getElementById('result-description');
         const randomizeBtn = document.getElementById('randomize-btn');
 
-        const settingsBtn = document.getElementById('settings-btn');
-        const settingsModal = document.getElementById('settings-modal');
-        const closeSettings = document.getElementById('close-settings');
-        const saveSettings = document.getElementById('save-settings');
-        const logoutBtn = document.getElementById('logout-btn');
-        const apiKeyInput = document.getElementById('api-key-input');
-
-        // Login Screen Elements
-        const loginScreen = document.getElementById('login-screen');
-        const loginApiKey = document.getElementById('login-api-key');
-        const loginBtnScreen = document.getElementById('login-btn');
-        const canvasLoginBtn = document.getElementById('canvas-login-btn');
-        const loginError = document.getElementById('login-error');
-
-        // --- STREAMING_CHUNK: Initialization ---
+        // --- STREAMING_CHUNK: Authentication & Lifecycle ---
         function init() {
             // Populate select
             HEROES.forEach(hero => {
@@ -258,110 +276,65 @@
                 heroSelect.appendChild(option);
             });
 
-            // Initialize Authentication Check
+            setupEventListeners();
             checkAuthOnLoad();
-
-            // Event Listeners
-            imageUploadInput.addEventListener('change', handleFileSelect);
-            heroSelect.addEventListener('change', checkReadiness);
-            generateBtn.addEventListener('click', () => processImage(false));
-            randomizeBtn.addEventListener('click', () => processImage(true));
-            retryBtn.addEventListener('click', () => processImage(false));
-            
-            // --- STREAMING_CHUNK:Auth & Settings Listeners ---
-            loginBtnScreen.addEventListener('click', handleLogin);
-            canvasLoginBtn.addEventListener('click', handleCanvasLogin);
-            logoutBtn.addEventListener('click', handleLogout);
-
-            settingsBtn.addEventListener('click', () => {
-                apiKeyInput.value = localStorage.getItem('gemini_api_key') || "";
-                settingsModal.classList.remove('hidden');
-            });
-            
-            closeSettings.addEventListener('click', () => {
-                settingsModal.classList.add('hidden');
-            });
-            
-            saveSettings.addEventListener('click', () => {
-                const val = apiKeyInput.value.trim();
-                if (val) {
-                    localStorage.setItem('gemini_api_key', val);
-                    localStorage.removeItem('canvas_mode');
-                } else {
-                    localStorage.removeItem('gemini_api_key');
-                    localStorage.setItem('canvas_mode', 'true');
-                }
-                
-                saveSettings.textContent = "Berhasil Disimpan!";
-                saveSettings.classList.replace('bg-slate-800', 'bg-green-600');
-                saveSettings.classList.replace('hover:bg-slate-900', 'hover:bg-green-700');
-                
-                setTimeout(() => {
-                    settingsModal.classList.add('hidden');
-                    saveSettings.textContent = "Simpan & Terapkan";
-                    saveSettings.classList.replace('bg-green-600', 'bg-slate-800');
-                    saveSettings.classList.replace('hover:bg-green-700', 'hover:bg-slate-900');
-                }, 1000);
-            });
-
-            // Drag and drop cosmetics
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, preventDefaults, false);
-            });
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, () => dropZone.classList.add('bg-red-50', 'border-red-400'), false);
-            });
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, () => dropZone.classList.remove('bg-red-50', 'border-red-400'), false);
-            });
-            dropZone.addEventListener('drop', handleDrop, false);
         }
 
-        // --- STREAMING_CHUNK: Authentication Logic ---
         function checkAuthOnLoad() {
-            // Automatically assume Canvas mode to skip login in this environment
-            const isCanvasMode = localStorage.getItem('canvas_mode') === 'true' || true; // Force true for auto-login in Canvas
             const savedKey = localStorage.getItem('gemini_api_key');
-            
+            const isCanvasMode = localStorage.getItem('canvas_mode') === 'true';
+
             if (savedKey || isCanvasMode) {
-                // Already Logged in, fade out login screen
-                loginScreen.classList.add('opacity-0', 'pointer-events-none');
-                setTimeout(() => loginScreen.classList.add('hidden'), 500);
-                
+                // If logged in, unlock app immediately
+                unlockApp();
                 if (savedKey) {
-                    apiKeyInput.value = savedKey; // Sync with settings
-                } else if (isCanvasMode) {
-                     localStorage.setItem('canvas_mode', 'true'); // Ensure it's set if forced
+                    apiKeyInput.value = savedKey;
+                    userStatusText.textContent = "API Key Terpasang";
+                } else {
+                    userStatusText.textContent = "Canvas Terhubung";
                 }
             } else {
-                // Not logged in, show screen (will likely be skipped due to forced canvas mode above)
+                // Not logged in, ensure login screen is visible
                 loginScreen.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
             }
         }
 
+        function unlockApp() {
+            loginScreen.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                loginScreen.classList.add('hidden');
+            }, 500);
+        }
+
         function handleLogin() {
             const val = loginApiKey.value.trim();
-            if (val) {
-                localStorage.setItem('gemini_api_key', val);
-                localStorage.removeItem('canvas_mode');
-                apiKeyInput.value = val;
-                
-                // UI Reset & Hide
-                loginError.classList.add('hidden');
-                loginApiKey.classList.remove('border-red-500');
-                checkAuthOnLoad();
-            } else {
-                // Show Error visual
-                loginError.classList.remove('hidden');
-                loginApiKey.classList.add('border-red-500');
+            if (!val) {
+                showLoginError("API Key tidak boleh kosong!");
+                return;
             }
+
+            if (val.length < 15) {
+                showLoginError("Format Gemini API Key tidak valid.");
+                return;
+            }
+
+            // Save and unlock
+            localStorage.setItem('gemini_api_key', val);
+            localStorage.removeItem('canvas_mode');
+            apiKeyInput.value = val;
+            userStatusText.textContent = "API Key Terpasang";
+            
+            loginError.classList.add('hidden');
+            loginApiKey.classList.remove('border-red-500');
+            unlockApp();
         }
 
         function handleCanvasLogin() {
             localStorage.setItem('canvas_mode', 'true');
             localStorage.removeItem('gemini_api_key');
             apiKeyInput.value = "";
-            checkAuthOnLoad();
+            userStatusText.textContent = "Canvas Terhubung";
+            unlockApp();
         }
 
         function handleLogout() {
@@ -369,25 +342,88 @@
             localStorage.removeItem('canvas_mode');
             apiKeyInput.value = "";
             loginApiKey.value = "";
+            userStatusText.textContent = "Terputus";
             
             settingsModal.classList.add('hidden');
-            checkAuthOnLoad(); // Re-trigger the login screen
+            loginScreen.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
         }
 
-        // --- STREAMING_CHUNK:File Handling and API Request ---
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        function showLoginError(msg) {
+            loginErrorText.textContent = msg;
+            loginError.classList.remove('hidden');
+            loginApiKey.classList.add('border-red-500');
         }
 
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            if (files && files.length > 0) {
-                handleFile(files[0]);
+        // --- STREAMING_CHUNK: Event Listeners ---
+        function setupEventListeners() {
+            // Login events
+            loginBtnScreen.addEventListener('click', handleLogin);
+            canvasLoginBtn.addEventListener('click', handleCanvasLogin);
+            loginApiKey.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') handleLogin();
+            });
+            if (toggleKeyVisibility) {
+                toggleKeyVisibility.addEventListener('click', () => {
+                    const isPass = loginApiKey.type === 'password';
+                    loginApiKey.type = isPass ? 'text' : 'password';
+                });
             }
+
+            // Settings events
+            settingsBtn.addEventListener('click', () => {
+                apiKeyInput.value = localStorage.getItem('gemini_api_key') || "";
+                settingsModal.classList.remove('hidden');
+            });
+            closeSettings.addEventListener('click', () => settingsModal.classList.add('hidden'));
+            logoutBtn.addEventListener('click', handleLogout);
+            
+            saveSettings.addEventListener('click', () => {
+                const val = apiKeyInput.value.trim();
+                if (val) {
+                    localStorage.setItem('gemini_api_key', val);
+                    localStorage.removeItem('canvas_mode');
+                    userStatusText.textContent = "API Key Terpasang";
+                } else {
+                    localStorage.removeItem('gemini_api_key');
+                    localStorage.setItem('canvas_mode', 'true');
+                    userStatusText.textContent = "Canvas Terhubung";
+                }
+                
+                saveSettings.textContent = "Tersimpan!";
+                saveSettings.classList.replace('bg-slate-800', 'bg-green-600');
+                
+                setTimeout(() => {
+                    settingsModal.classList.add('hidden');
+                    saveSettings.textContent = "Simpan Perubahan";
+                    saveSettings.classList.replace('bg-green-600', 'bg-slate-800');
+                }, 800);
+            });
+
+            // File Upload & Generation events
+            imageUploadInput.addEventListener('change', handleFileSelect);
+            heroSelect.addEventListener('change', checkReadiness);
+            generateBtn.addEventListener('click', () => processImage(false));
+            randomizeBtn.addEventListener('click', () => processImage(true));
+            retryBtn.addEventListener('click', () => processImage(false));
+
+            // Drag and drop events
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }, false);
+            });
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.add('bg-red-50', 'border-red-400'), false);
+            });
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => dropZone.classList.remove('bg-red-50', 'border-red-400'), false);
+            });
+            dropZone.addEventListener('drop', (e) => {
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            }, false);
         }
 
+        // --- STREAMING_CHUNK: File Processing & API ---
         function handleFileSelect(e) {
             if (e.target.files && e.target.files.length > 0) {
                 handleFile(e.target.files[0]);
@@ -396,11 +432,10 @@
 
         function handleFile(file) {
             if (!file.type.startsWith('image/')) {
-                showError("Mohon unggah file gambar yang valid (JPG/PNG).");
+                showAppError("Mohon unggah file gambar yang valid (JPG/PNG).");
                 return;
             }
 
-            // Client-side resize to prevent huge payloads
             const reader = new FileReader();
             reader.onload = function(event) {
                 const img = new Image();
@@ -428,16 +463,13 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    // Convert to base64, force JPEG for consistency
                     originalMimeType = 'image/jpeg';
                     const dataUrl = canvas.toDataURL(originalMimeType, 0.8);
                     
-                    // Update UI
                     imagePreview.src = dataUrl;
                     imagePreview.classList.remove('hidden');
                     uploadPlaceholder.classList.add('hidden');
                     
-                    // Store pure base64 without prefix for Gemini API
                     base64UploadedImage = dataUrl.split(',')[1];
                     checkReadiness();
                 }
@@ -447,21 +479,12 @@
         }
 
         function checkReadiness() {
-            if (base64UploadedImage && heroSelect.value) {
-                generateBtn.disabled = false;
-            } else {
-                generateBtn.disabled = true;
-            }
+            generateBtn.disabled = !(base64UploadedImage && heroSelect.value);
         }
 
         function getApiUrl() {
-            // Menggunakan gemini-3.1-flash-image sesuai instruksi sistem terbaik
             const storedKey = localStorage.getItem('gemini_api_key') || "";
             return `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent?key=${storedKey}`;
-        }
-
-        function getRandomPose() {
-            return POSES[Math.floor(Math.random() * POSES.length)];
         }
 
         function buildPrompt(heroId, pose) {
@@ -476,25 +499,19 @@ Instruksi Penting:
 6. Buat agar pencahayaan dan bayangan terlihat menyatu sehingga tampak seperti sebuah foto bersejarah atau lukisan realistis yang mulus antara orang asli dan pahlawan.`;
         }
 
-        // --- STREAMING_CHUNK:Executing API Calls ---
-        async function fetchWithRetry(url, options, maxRetries = 3) {
+        async function fetchWithRetry(url, options, maxRetries = 2) {
             let delay = 1000;
             for (let i = 0; i < maxRetries; i++) {
                 try {
                     const response = await fetch(url, options);
                     if (!response.ok) {
                         const errText = await response.text();
-                        
-                        // Handle missing/invalid API Key gracefully
                         if (response.status === 400 && (errText.includes("API_KEY_INVALID") || errText.toLowerCase().includes("api key not valid"))) {
                             throw new Error("API_KEY_ERROR");
                         }
-                        
                         if (response.status === 429) {
-                            // Throttled
-                            console.warn(`Rate limited. Retrying in ${delay}ms...`);
                             await new Promise(res => setTimeout(res, delay));
-                            delay *= 2; // Exponential backoff
+                            delay *= 2;
                             continue;
                         }
                         throw new Error(`API Error ${response.status}: ${errText}`);
@@ -508,13 +525,6 @@ Instruksi Penting:
             }
         }
 
-        function getApiUrl() {
-            // Menggunakan gemini-3.1-flash-image sesuai instruksi sistem terbaik.
-            // Di lingkungan Canvas ini, API Key otomatis diinjeksi jika string kosong.
-            const storedKey = localStorage.getItem('gemini_api_key') || "";
-            return `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent?key=${storedKey}`;
-        }
-
         async function processImage(isRandomize = false) {
             if (isProcessing || !base64UploadedImage) return;
 
@@ -525,21 +535,16 @@ Instruksi Penting:
             generateBtn.disabled = true;
             randomizeBtn.disabled = true;
             
-            // UI State: Loading
             outputSection.classList.remove('hidden');
             outputSection.classList.add('flex');
             loadingState.classList.remove('hidden');
             errorState.classList.add('hidden');
             resultState.classList.add('hidden');
 
-            const pose = getRandomPose();
+            const pose = POSES[Math.floor(Math.random() * POSES.length)];
             const promptText = buildPrompt(selectedHeroId, pose);
             
-            if (isRandomize) {
-                loadingText.textContent = "Mencari gaya dan ekspresi baru...";
-            } else {
-                loadingText.textContent = "AI sedang menyatukan foto Anda dengan Pahlawan...";
-            }
+            loadingText.textContent = isRandomize ? "Mencari gaya dan ekspresi baru..." : "AI sedang menyatukan foto Anda dengan Pahlawan...";
 
             const payload = {
                 contents: [{
@@ -555,7 +560,7 @@ Instruksi Penting:
                     ]
                 }],
                 generationConfig: {
-                    responseModalities: ['IMAGE'] // We only need the image back
+                    responseModalities: ['IMAGE']
                 }
             };
 
@@ -566,7 +571,6 @@ Instruksi Penting:
                     body: JSON.stringify(payload)
                 });
 
-                // Parse the response
                 const part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
                 
                 if (part && part.inlineData && part.inlineData.data) {
@@ -574,7 +578,6 @@ Instruksi Penting:
                     const base64Data = part.inlineData.data;
                     const imageUrl = `data:${mimeType};base64,${base64Data}`;
                     
-                    // Show Result
                     resultImage.src = imageUrl;
                     downloadLink.href = imageUrl;
                     
@@ -584,21 +587,17 @@ Instruksi Penting:
                     loadingState.classList.add('hidden');
                     resultState.classList.remove('hidden');
                     resultState.classList.add('flex');
-                    
-                    // Scroll to result nicely
                     outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
                 } else {
                     throw new Error("Format respons API tidak sesuai atau gambar gagal dibuat.");
                 }
 
             } catch (error) {
                 console.error("Generation Error:", error);
-                
                 if (error.message === "API_KEY_ERROR") {
-                    showError("API Key tidak valid atau kosong. Silakan buka pengaturan (ikon gerigi) atau logout untuk mengisi ulang API Key.");
+                    showAppError("API Key tidak valid atau kosong. Silakan buka pengaturan (ikon gerigi) untuk mengisi ulang API Key.");
                 } else {
-                    showError("Gagal memproses gambar. Layanan mungkin sedang sibuk atau terjadi kesalahan sistem. Silakan coba lagi.");
+                    showAppError("Gagal memproses gambar. Layanan mungkin sedang sibuk atau terjadi kesalahan sistem.");
                 }
             } finally {
                 isProcessing = false;
@@ -607,18 +606,16 @@ Instruksi Penting:
             }
         }
 
-        function showError(message) {
+        function showAppError(message) {
             loadingState.classList.add('hidden');
             resultState.classList.add('hidden');
-            
             outputSection.classList.remove('hidden');
             outputSection.classList.add('flex');
-            
             errorState.classList.remove('hidden');
             errorMessage.textContent = message;
         }
 
-        // Run initialization
+        // Run
         init();
     </script>
 </body>
