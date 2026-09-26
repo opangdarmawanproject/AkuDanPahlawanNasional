@@ -30,120 +30,121 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        /* Fade transition classes */
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
     </style>
 </head>
 <body class="min-h-screen text-slate-800 pb-12 relative overflow-x-hidden">
 
-    <div id="login-screen" class="fixed inset-0 z-[100] bg-slate-900/90 flex items-center justify-center p-4 backdrop-blur-md transition-all duration-500">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-6 transform transition-all text-center border border-slate-100 relative">
-            <div class="w-20 h-20 bg-gradient-to-tr from-red-600 to-amber-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-red-500/20 text-white">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
-            </div>
-            <div>
-                <h2 class="text-2xl md:text-3xl font-bold title-font text-slate-800 mb-1">Masuk ke Gemini AI</h2>
-                <p class="text-slate-500 text-xs md:text-sm leading-relaxed">Hubungkan Gemini API Key Anda. Setelah login tersimpan, aplikasi otomatis langsung siap digunakan.</p>
+    <div id="welcome-screen" class="fixed inset-0 z-[100] bg-slate-900/90 flex items-center justify-center p-4 backdrop-blur-md transition-all duration-500">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8 space-y-6 transform transition-all border border-slate-100 relative">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-gradient-to-tr from-red-600 to-amber-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-red-500/20 text-white mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold title-font text-slate-800 mb-2">Selamat Datang!</h2>
+                <p class="text-slate-500 text-sm leading-relaxed">Aplikasi ini terhubung otomatis dengan Gemini AI. Ikuti panduan di bawah ini untuk mulai membuat foto bersejarah Anda.</p>
             </div>
             
-            <div class="space-y-4 pt-1 text-left">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Gemini API Key</label>
-                    <div class="relative">
-                        <input type="password" id="login-api-key" class="w-full py-3.5 px-4 border-2 border-slate-200 rounded-xl bg-slate-50 focus:outline-none focus:border-red-500 focus:bg-white transition-all text-sm font-mono" placeholder="AIzaSy...">
-                        <button type="button" id="toggle-key-visibility" class="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        </button>
+            <div class="bg-slate-50 rounded-xl p-5 border border-slate-100 space-y-4">
+                <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider mb-2">Tata Cara Pemakaian:</h3>
+                
+                <div class="flex gap-4 items-start">
+                    <div class="flex-shrink-0 w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold">1</div>
+                    <div>
+                        <p class="font-semibold text-slate-700 text-sm">Unggah Foto Anda</p>
+                        <p class="text-xs text-slate-500 mt-1">Siapkan foto diri Anda yang jelas. AI akan menganalisis wajah dan postur Anda.</p>
                     </div>
-                    <p id="login-error" class="text-red-500 text-xs mt-1.5 hidden font-medium flex items-center gap-1">
-                        <svg class="w-3.5 h-3.5 inline" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                        <span id="login-error-text">API Key tidak valid atau kosong!</span>
-                    </p>
                 </div>
-
-                <button id="login-btn" class="w-full bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-semibold py-3.5 px-6 rounded-xl transition-all shadow-lg hover:shadow-red-600/30 flex items-center justify-center gap-2">
-                    <span id="login-btn-text">Masuk & Sambungkan</span>
-                    <svg id="login-btn-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </button>
+                
+                <div class="flex gap-4 items-start">
+                    <div class="flex-shrink-0 w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold">2</div>
+                    <div>
+                        <p class="font-semibold text-slate-700 text-sm">Pilih Pahlawan</p>
+                        <p class="text-xs text-slate-500 mt-1">Pilih tokoh Pahlawan Nasional Indonesia dari daftar yang tersedia (Soekarno, Hatta, dll).</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 items-start">
+                    <div class="flex-shrink-0 w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold">3</div>
+                    <div>
+                        <p class="font-semibold text-slate-700 text-sm">Buat & Simpan Foto</p>
+                        <p class="text-xs text-slate-500 mt-1">Klik tombol <strong>Buat Foto Bersama</strong>, tunggu keajaiban AI, lalu simpan hasilnya ke perangkat Anda.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="pt-4 border-t border-slate-100 flex flex-col gap-2">
-                <button id="canvas-login-btn" class="text-xs text-slate-500 hover:text-slate-800 transition-colors py-1.5 px-3 rounded-lg bg-slate-100 hover:bg-slate-200">
-                    Mode Otomatis Canvas AI (Tanpa Perlu Key)
-                </button>
-                <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="text-[11px] text-red-600 hover:underline">
-                    Dapatkan Gemini API Key Gratis di sini &rarr;
-                </a>
-            </div>
+            <button id="start-btn" class="w-full bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-semibold py-3.5 px-6 rounded-xl transition-all shadow-lg hover:shadow-red-600/30 flex items-center justify-center gap-2">
+                <span>Mengerti & Mulai Gunakan</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
         </div>
     </div>
 
     <header class="hero-bg text-white shadow-md relative">
         <div class="absolute top-4 right-4 flex items-center gap-2">
-            <span id="user-status-pill" class="text-xs px-2.5 py-1 rounded-full bg-red-800/80 border border-red-400/40 text-red-100 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                <span id="user-status-text">Menyambungkan...</span>
+            <!-- Auto-connected status pill -->
+            <span class="text-xs px-3 py-1.5 rounded-full bg-red-800/80 border border-red-400/40 text-red-100 flex items-center gap-2 shadow-sm">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.8)]"></span>
+                <span class="font-medium">Gemini AI Aktif & Terhubung</span>
             </span>
-            <button id="settings-btn" class="text-red-100 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Pengaturan Akun & Key">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-            </button>
         </div>
-        <div class="max-w-4xl mx-auto px-4 py-8 text-center">
-            <h1 class="text-3xl md:text-5xl font-bold title-font mb-2">Aku & Pahlawan Nasional</h1>
-            <p class="text-red-100 md:text-lg text-sm">Abadikan momen imajinatif bersama tokoh-tokoh bersejarah Indonesia.</p>
+        <div class="max-w-4xl mx-auto px-4 py-10 md:py-14 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold title-font mb-4 drop-shadow-md">Aku & Pahlawan Nasional</h1>
+            <p class="text-red-100 md:text-lg text-sm max-w-2xl mx-auto drop-shadow-sm">Abadikan momen imajinatif bersama tokoh-tokoh bersejarah Indonesia dalam balutan foto klasik yang realistis, ditenagai oleh kecerdasan buatan.</p>
         </div>
     </header>
 
-    <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
-            <button id="close-settings" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <h3 class="text-xl font-bold text-slate-800 mb-4">Pengaturan Akun Gemini</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">API Key Gemini Aktif</label>
-                    <input type="password" id="api-key-input" class="w-full p-3 border border-slate-300 rounded-xl bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 font-mono text-sm" placeholder="AIzaSy...">
-                    <p class="text-xs text-slate-500 mt-2">Kunci disimpan aman di peramban (localStorage) Anda dan digunakan langsung untuk request AI.</p>
-                </div>
-                <button id="save-settings" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 px-6 rounded-xl transition-colors">
-                    Simpan Perubahan
-                </button>
-                <button id="logout-btn" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-3 px-6 rounded-xl transition-colors border border-red-200">
-                    Keluar / Hapus Kunci
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <main class="max-w-4xl mx-auto px-4 mt-8">
+    <main class="max-w-4xl mx-auto px-4 mt-8 md:-mt-8 relative z-10">
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
             
             <div class="p-6 md:p-8 border-b border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-8">
                 
                 <!-- Upload Section -->
                 <div class="space-y-4">
-                    <h2 class="text-xl font-semibold text-slate-700">1. Unggah Fotomu</h2>
-                    <div id="drop-zone" class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center cursor-pointer hover:bg-slate-50 transition-colors relative group h-64 flex flex-col items-center justify-center">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-slate-800 text-white flex items-center justify-center text-xs font-bold">1</span>
+                        <h2 class="text-xl font-semibold text-slate-700">Unggah Fotomu</h2>
+                    </div>
+                    <div id="drop-zone" class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center cursor-pointer hover:bg-slate-50 transition-colors relative group h-64 flex flex-col items-center justify-center overflow-hidden">
                         <input type="file" id="image-upload" accept="image/jpeg, image/png, image/webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                        <div id="upload-placeholder" class="space-y-2 pointer-events-none">
-                            <svg class="mx-auto h-12 w-12 text-slate-400 group-hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <p class="text-sm text-slate-500">Klik atau seret foto ke sini<br>(Maks. saran 5MB)</p>
+                        <div id="upload-placeholder" class="space-y-3 pointer-events-none transition-transform group-hover:scale-105">
+                            <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto group-hover:bg-red-100 transition-colors">
+                                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-slate-700">Klik atau seret foto ke sini</p>
+                                <p class="text-xs text-slate-400 mt-1">Format JPG, PNG, WEBP didukung</p>
+                            </div>
                         </div>
-                        <img id="image-preview" class="hidden mx-auto h-full w-full object-contain rounded-lg" alt="Preview">
+                        <img id="image-preview" class="hidden mx-auto h-full w-full object-cover rounded-lg shadow-sm" alt="Preview">
                     </div>
                 </div>
 
                 <!-- Selection Section -->
                 <div class="space-y-4">
-                    <h2 class="text-xl font-semibold text-slate-700">2. Pilih Pahlawan</h2>
-                    <select id="hero-select" class="w-full p-3 border border-slate-300 rounded-xl bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-700">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-slate-800 text-white flex items-center justify-center text-xs font-bold">2</span>
+                        <h2 class="text-xl font-semibold text-slate-700">Pilih Pahlawan</h2>
+                    </div>
+                    <select id="hero-select" class="w-full p-3.5 border border-slate-300 rounded-xl bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-700 cursor-pointer appearance-none transition-shadow hover:shadow-sm">
                         <option value="" disabled selected>-- Pilih Tokoh Pahlawan --</option>
                         <!-- Options populated by JS -->
                     </select>
+                    <!-- Custom dropdown arrow -->
+                    <div class="relative -mt-10 pointer-events-none float-right pr-4">
+                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
 
-                    <div class="pt-4 space-y-3">
-                        <button id="generate-btn" disabled class="w-full bg-red-600 hover:bg-red-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-semibold py-4 px-6 rounded-xl transition-colors shadow-sm flex justify-center items-center gap-2">
+                    <div class="pt-8 space-y-3">
+                        <button id="generate-btn" disabled class="w-full bg-red-600 hover:bg-red-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-semibold py-4 px-6 rounded-xl transition-all shadow-sm hover:shadow-md active:scale-[0.98] flex justify-center items-center gap-2">
                             <span>Buat Foto Bersama</span>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         </button>
@@ -151,53 +152,63 @@
                 </div>
             </div>
 
-            <!-- Output Section -->
-            <div id="output-section" class="p-6 md:p-8 bg-slate-50 hidden flex-col items-center justify-center min-h-[400px]">
+            <div id="output-section" class="p-6 md:p-10 bg-slate-50 hidden flex-col items-center justify-center min-h-[400px]">
                 
                 <!-- Loading State -->
-                <div id="loading-state" class="hidden flex-col items-center space-y-4">
+                <div id="loading-state" class="hidden flex-col items-center space-y-5 py-8">
                     <div class="loader"></div>
-                    <p id="loading-text" class="text-slate-600 font-medium animate-pulse">AI sedang memproses gambar Anda...</p>
-                    <p class="text-xs text-slate-400 text-center max-w-xs">Proses ini mungkin memakan waktu hingga 30 detik. Mohon tunggu.</p>
+                    <div class="text-center">
+                        <p id="loading-text" class="text-slate-700 font-semibold animate-pulse text-lg">AI sedang memproses gambar Anda...</p>
+                        <p class="text-sm text-slate-500 mt-2 max-w-sm mx-auto">Proses kreatif ini memanfaatkan kemampuan mutakhir Gemini AI. Mohon tunggu beberapa detik hingga karya Anda siap.</p>
+                    </div>
                 </div>
 
                 <!-- Error State -->
-                <div id="error-state" class="hidden bg-red-50 text-red-600 p-4 rounded-xl border border-red-200 text-center w-full max-w-md">
-                    <svg class="w-8 h-8 mx-auto mb-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <p id="error-message" class="font-medium">Terjadi kesalahan.</p>
-                    <button id="retry-btn" class="mt-3 text-sm underline hover:text-red-800">Coba Lagi</button>
+                <div id="error-state" class="hidden bg-red-50 text-red-600 p-6 rounded-2xl border border-red-200 text-center w-full max-w-md shadow-sm">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <p id="error-message" class="font-medium text-slate-800 mb-4">Terjadi kesalahan.</p>
+                    <button id="retry-btn" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-lg transition-colors text-sm">Coba Lagi</button>
                 </div>
 
                 <!-- Result State -->
                 <div id="result-state" class="hidden w-full flex-col items-center space-y-6">
-                    <div class="relative group w-full max-w-2xl">
-                        <img id="result-image" class="w-full h-auto rounded-xl shadow-lg border-4 border-white" alt="Hasil Foto Bersama Pahlawan">
+                    <div class="relative group w-full max-w-2xl mx-auto">
+                        <img id="result-image" class="w-full h-auto rounded-xl shadow-2xl border-8 border-white bg-white" alt="Hasil Foto Bersama Pahlawan">
                         
-                        <a id="download-link" href="#" download="Aku_dan_Pahlawan.png" class="absolute bottom-4 right-4 bg-white/90 backdrop-blur text-slate-800 p-2 rounded-lg shadow hover:bg-white transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 flex items-center gap-2">
+                        <a id="download-link" href="#" download="Aku_dan_Pahlawan.png" class="absolute bottom-4 right-4 bg-white/95 backdrop-blur-sm text-slate-800 p-3 rounded-xl shadow-lg hover:bg-white hover:text-red-600 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            <span class="text-sm font-semibold pr-1">Simpan</span>
+                            <span class="text-sm font-bold pr-1">Simpan Foto</span>
                         </a>
                     </div>
                     
-                    <div class="text-center space-y-2">
-                        <p id="result-description" class="text-sm text-slate-600 italic max-w-lg mx-auto">Suasana dan pose disesuaikan otomatis oleh AI.</p>
+                    <div class="text-center space-y-3 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 w-full max-w-2xl mx-auto">
+                        <div class="inline-flex items-center gap-2 bg-amber-50 text-amber-700 px-3 py-1 rounded-full text-xs font-semibold mb-2 border border-amber-200">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path></svg>
+                            Karya AI Berhasil Dibuat
+                        </div>
+                        <p id="result-description" class="text-slate-700 max-w-lg mx-auto"></p>
                         
-                        <button id="randomize-btn" class="mt-4 bg-slate-800 hover:bg-slate-900 text-white font-medium py-2 px-6 rounded-lg transition-colors inline-flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                            Ganti Gaya & Ekspresi
-                        </button>
+                        <div class="pt-4 border-t border-slate-100 mt-4">
+                            <button id="randomize-btn" class="bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-6 rounded-xl transition-all shadow-md inline-flex items-center gap-2 active:scale-95">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                Hasilkan Variasi Lain
+                            </button>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </div>
         
-        <p class="text-center text-slate-400 text-xs mt-6">
-            Diberdayakan oleh Gemini AI. Hasil gambar merupakan manipulasi digital (AI-Generated).
+        <p class="text-center text-slate-400 text-xs mt-8 pb-4">
+            Diberdayakan oleh Gemini AI (gemini-3.1-flash-image).<br>Hasil gambar merupakan manipulasi digital (AI-Generated) untuk tujuan edukasi dan hiburan.
         </p>
     </main>
 
     <script>
+        // Data Tokoh Pahlawan
         const HEROES = [
             { id: 'soekarno', name: 'Ir. Soekarno', context: 'Gaya vintage tahun 1940-an, pakaian formal kenegaraan atau peci hitam khas Soekarno, suasana proklamasi atau pidato kebangsaan.' },
             { id: 'hatta', name: 'Mohammad Hatta', context: 'Gaya vintage tahun 1940-an, kacamata bulat khas, pakaian formal rapi, suasana cendekiawan atau perundingan bersejarah.' },
@@ -205,47 +216,29 @@
             { id: 'kartini', name: 'R.A. Kartini', context: 'Suasana klasik akhir abad 19, memakai kebaya tradisional Jawa, latar belakang interior rumah kayu klasik atau ruang baca.' },
             { id: 'cutnyakdien', name: 'Cut Nyak Dien', context: 'Suasana perjuangan Aceh abad 19, pakaian tradisional Aceh, wajah tegas pejuang, latar belakang alam atau medan pertempuran.' },
             { id: 'diponegoro', name: 'Pangeran Diponegoro', context: 'Suasana Perang Jawa 1800-an, memakai sorban dan jubah putih, latar belakang bernuansa tradisional Jawa atau pedesaan.' },
-            { id: 'kihajar', name: 'Ki Hajar Dewantara', context: 'Suasana pendidikan masa kolonial, pakaian tradisional Jawa rapi atau jas era Belanda, latar belakang ruang kelas atau pendopo.' },
+            { id: 'kihajar', name: 'Ki Hajar Dewantara', context: 'Suasana pendidikan masa kolonial, pakaian jas era kolonial belanda atau pakaian tradisional Jawa, kacamata bundar.' },
             { id: 'pattimura', name: 'Kapitan Pattimura', context: 'Suasana perjuangan Maluku 1800-an, membawa parang salawaku, latar belakang pesisir atau benteng tropis.' },
             { id: 'imambonjol', name: 'Tuanku Imam Bonjol', context: 'Suasana Perang Padri, pakaian ulama putih bersorban khas Minangkabau, latar belakang perbukitan Sumatera.' },
-            { id: 'marthachristina', name: 'Martha Christina Tiahahu', context: 'Suasana perjuangan Maluku, sosok pejuang wanita muda dengan rambut terurai, latar belakang alam tropis atau medan perang.' }
+            { id: 'marthachristina', name: 'Martha Christina Tiahahu', context: 'Suasana perjuangan Maluku, sosok pejuang wanita muda dengan rambut terurai dan ikat kepala pita, latar belakang alam tropis.' }
         ];
 
         const POSES = [
             "tersenyum hangat ke arah kamera secara berdampingan",
             "menatap penuh tekad ke arah cakrawala bersama",
-            "berjabat tangan dengan akrab",
             "sedang berdiskusi serius mengenai masa depan bangsa",
-            "berpose gagah dan heroik menghadap depan",
-            "saling merangkul pundak dengan penuh persahabatan",
-            "tersenyum simpul dengan pose formal dan berwibawa",
-            "berdiri tegak bersisian dengan ekspresi bangga",
-            "tampak sedang berjalan bersama sambil berbincang santai",
-            "berpose klasik ala foto studio zaman dahulu dengan ekspresi tenang"
+            "berpose gagah dan heroik menghadap depan dengan bangga",
+            "tersenyum simpul dengan pose formal dan berwibawa layaknya foto studio kuno",
+            "tampak sedang berdiri berdampingan dengan aura persahabatan pejuang"
         ];
 
         let base64UploadedImage = null; 
         let originalMimeType = null;
         let isProcessing = false;
 
-        // Login & Setting Elements
-        const loginScreen = document.getElementById('login-screen');
-        const loginApiKey = document.getElementById('login-api-key');
-        const loginBtnScreen = document.getElementById('login-btn');
-        const canvasLoginBtn = document.getElementById('canvas-login-btn');
-        const loginError = document.getElementById('login-error');
-        const loginErrorText = document.getElementById('login-error-text');
-        const toggleKeyVisibility = document.getElementById('toggle-key-visibility');
-        const userStatusText = document.getElementById('user-status-text');
+        // Elements Mapping
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const startBtn = document.getElementById('start-btn');
         
-        const settingsBtn = document.getElementById('settings-btn');
-        const settingsModal = document.getElementById('settings-modal');
-        const closeSettings = document.getElementById('close-settings');
-        const saveSettings = document.getElementById('save-settings');
-        const logoutBtn = document.getElementById('logout-btn');
-        const apiKeyInput = document.getElementById('api-key-input');
-
-        // Main App Elements
         const imageUploadInput = document.getElementById('image-upload');
         const dropZone = document.getElementById('drop-zone');
         const uploadPlaceholder = document.getElementById('upload-placeholder');
@@ -266,9 +259,9 @@
         const resultDescription = document.getElementById('result-description');
         const randomizeBtn = document.getElementById('randomize-btn');
 
-        // --- STREAMING_CHUNK: Authentication & Lifecycle ---
+        // --- STREAMING_CHUNK: Initialization & UI Handlers ---
         function init() {
-            // Populate select
+            // Populate select options
             HEROES.forEach(hero => {
                 const option = document.createElement('option');
                 option.value = hero.id;
@@ -277,144 +270,31 @@
             });
 
             setupEventListeners();
-            checkAuthOnLoad();
         }
 
-        function checkAuthOnLoad() {
-            const savedKey = localStorage.getItem('gemini_api_key');
-            const isCanvasMode = localStorage.getItem('canvas_mode') === 'true';
-
-            if (savedKey || isCanvasMode) {
-                // If logged in, unlock app immediately
-                unlockApp();
-                if (savedKey) {
-                    apiKeyInput.value = savedKey;
-                    userStatusText.textContent = "API Key Terpasang";
-                } else {
-                    userStatusText.textContent = "Canvas Terhubung";
-                }
-            } else {
-                // Not logged in, ensure login screen is visible
-                loginScreen.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
-            }
-        }
-
-        function unlockApp() {
-            loginScreen.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(() => {
-                loginScreen.classList.add('hidden');
-            }, 500);
-        }
-
-        function handleLogin() {
-            const val = loginApiKey.value.trim();
-            if (!val) {
-                showLoginError("API Key tidak boleh kosong!");
-                return;
-            }
-
-            if (val.length < 15) {
-                showLoginError("Format Gemini API Key tidak valid.");
-                return;
-            }
-
-            // Save and unlock
-            localStorage.setItem('gemini_api_key', val);
-            localStorage.removeItem('canvas_mode');
-            apiKeyInput.value = val;
-            userStatusText.textContent = "API Key Terpasang";
-            
-            loginError.classList.add('hidden');
-            loginApiKey.classList.remove('border-red-500');
-            unlockApp();
-        }
-
-        function handleCanvasLogin() {
-            localStorage.setItem('canvas_mode', 'true');
-            localStorage.removeItem('gemini_api_key');
-            apiKeyInput.value = "";
-            userStatusText.textContent = "Canvas Terhubung";
-            unlockApp();
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('gemini_api_key');
-            localStorage.removeItem('canvas_mode');
-            apiKeyInput.value = "";
-            loginApiKey.value = "";
-            userStatusText.textContent = "Terputus";
-            
-            settingsModal.classList.add('hidden');
-            loginScreen.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
-        }
-
-        function showLoginError(msg) {
-            loginErrorText.textContent = msg;
-            loginError.classList.remove('hidden');
-            loginApiKey.classList.add('border-red-500');
-        }
-
-        // --- STREAMING_CHUNK: Event Listeners ---
         function setupEventListeners() {
-            // Login events
-            loginBtnScreen.addEventListener('click', handleLogin);
-            canvasLoginBtn.addEventListener('click', handleCanvasLogin);
-            loginApiKey.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') handleLogin();
-            });
-            if (toggleKeyVisibility) {
-                toggleKeyVisibility.addEventListener('click', () => {
-                    const isPass = loginApiKey.type === 'password';
-                    loginApiKey.type = isPass ? 'text' : 'password';
-                });
-            }
-
-            // Settings events
-            settingsBtn.addEventListener('click', () => {
-                apiKeyInput.value = localStorage.getItem('gemini_api_key') || "";
-                settingsModal.classList.remove('hidden');
-            });
-            closeSettings.addEventListener('click', () => settingsModal.classList.add('hidden'));
-            logoutBtn.addEventListener('click', handleLogout);
-            
-            saveSettings.addEventListener('click', () => {
-                const val = apiKeyInput.value.trim();
-                if (val) {
-                    localStorage.setItem('gemini_api_key', val);
-                    localStorage.removeItem('canvas_mode');
-                    userStatusText.textContent = "API Key Terpasang";
-                } else {
-                    localStorage.removeItem('gemini_api_key');
-                    localStorage.setItem('canvas_mode', 'true');
-                    userStatusText.textContent = "Canvas Terhubung";
-                }
-                
-                saveSettings.textContent = "Tersimpan!";
-                saveSettings.classList.replace('bg-slate-800', 'bg-green-600');
-                
-                setTimeout(() => {
-                    settingsModal.classList.add('hidden');
-                    saveSettings.textContent = "Simpan Perubahan";
-                    saveSettings.classList.replace('bg-green-600', 'bg-slate-800');
-                }, 800);
+            // Dismiss Welcome Screen
+            startBtn.addEventListener('click', () => {
+                welcomeScreen.classList.add('fade-out');
+                setTimeout(() => { welcomeScreen.classList.add('hidden'); }, 500);
             });
 
-            // File Upload & Generation events
+            // File Upload Events
             imageUploadInput.addEventListener('change', handleFileSelect);
             heroSelect.addEventListener('change', checkReadiness);
             generateBtn.addEventListener('click', () => processImage(false));
             randomizeBtn.addEventListener('click', () => processImage(true));
             retryBtn.addEventListener('click', () => processImage(false));
 
-            // Drag and drop events
+            // Drag and drop Visual Cues
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                 dropZone.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }, false);
             });
             ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, () => dropZone.classList.add('bg-red-50', 'border-red-400'), false);
+                dropZone.addEventListener(eventName, () => dropZone.classList.add('bg-red-50', 'border-red-400', 'scale-[1.02]'), false);
             });
             ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, () => dropZone.classList.remove('bg-red-50', 'border-red-400'), false);
+                dropZone.addEventListener(eventName, () => dropZone.classList.remove('bg-red-50', 'border-red-400', 'scale-[1.02]'), false);
             });
             dropZone.addEventListener('drop', (e) => {
                 if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
@@ -423,7 +303,6 @@
             }, false);
         }
 
-        // --- STREAMING_CHUNK: File Processing & API ---
         function handleFileSelect(e) {
             if (e.target.files && e.target.files.length > 0) {
                 handleFile(e.target.files[0]);
@@ -432,7 +311,7 @@
 
         function handleFile(file) {
             if (!file.type.startsWith('image/')) {
-                showAppError("Mohon unggah file gambar yang valid (JPG/PNG).");
+                showAppError("Mohon unggah file gambar yang valid (JPG, PNG, WEBP).");
                 return;
             }
 
@@ -446,6 +325,7 @@
                     let width = img.width;
                     let height = img.height;
 
+                    // Resize if too large
                     if (width > height) {
                         if (width > MAX_WIDTH) {
                             height *= MAX_WIDTH / width;
@@ -464,11 +344,12 @@
                     ctx.drawImage(img, 0, 0, width, height);
 
                     originalMimeType = 'image/jpeg';
-                    const dataUrl = canvas.toDataURL(originalMimeType, 0.8);
+                    const dataUrl = canvas.toDataURL(originalMimeType, 0.85);
                     
                     imagePreview.src = dataUrl;
                     imagePreview.classList.remove('hidden');
                     uploadPlaceholder.classList.add('hidden');
+                    dropZone.classList.replace('p-6', 'p-2');
                     
                     base64UploadedImage = dataUrl.split(',')[1];
                     checkReadiness();
@@ -479,50 +360,23 @@
         }
 
         function checkReadiness() {
-            generateBtn.disabled = !(base64UploadedImage && heroSelect.value);
+            if (base64UploadedImage && heroSelect.value) {
+                generateBtn.disabled = false;
+            } else {
+                generateBtn.disabled = true;
+            }
         }
 
-        function getApiUrl() {
-            const storedKey = localStorage.getItem('gemini_api_key') || "";
-            return `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent?key=${storedKey}`;
-        }
-
+        // --- STREAMING_CHUNK: AI Generation Logic ---
         function buildPrompt(heroId, pose) {
             const hero = HEROES.find(h => h.id === heroId);
-            return `Tugas: Edit foto yang dilampirkan ini.
-Instruksi Penting: 
-1. PERTAHANKAN wajah dan sosok orang asli yang ada di dalam foto unggahan. Jangan ubah identitas mereka.
-2. TAMBAHKAN sosok Pahlawan Nasional Indonesia, ${hero.name}, berdiri atau berada di samping orang asli tersebut.
-3. Wajah ${hero.name} HARUS sangat akurat secara historis berdasarkan lukisan atau foto sejarah.
-4. Suasana dan Latar Belakang: ${hero.context}
-5. Pose dan Ekspresi Mereka Berdua: ${pose}.
-6. Buat agar pencahayaan dan bayangan terlihat menyatu sehingga tampak seperti sebuah foto bersejarah atau lukisan realistis yang mulus antara orang asli dan pahlawan.`;
-        }
-
-        async function fetchWithRetry(url, options, maxRetries = 2) {
-            let delay = 1000;
-            for (let i = 0; i < maxRetries; i++) {
-                try {
-                    const response = await fetch(url, options);
-                    if (!response.ok) {
-                        const errText = await response.text();
-                        if (response.status === 400 && (errText.includes("API_KEY_INVALID") || errText.toLowerCase().includes("api key not valid"))) {
-                            throw new Error("API_KEY_ERROR");
-                        }
-                        if (response.status === 429) {
-                            await new Promise(res => setTimeout(res, delay));
-                            delay *= 2;
-                            continue;
-                        }
-                        throw new Error(`API Error ${response.status}: ${errText}`);
-                    }
-                    return await response.json();
-                } catch (err) {
-                    if (i === maxRetries - 1) throw err;
-                    await new Promise(res => setTimeout(res, delay));
-                    delay *= 2;
-                }
-            }
+            return `Tugas Utama: Edit foto yang dilampirkan ini secara profesional dan realistis.
+Instruksi Wajib: 
+1. PERTAHANKAN wajah, identitas, dan sosok orang asli yang ada di dalam foto unggahan dengan akurat.
+2. TAMBAHKAN sosok Pahlawan Nasional Indonesia, ${hero.name}, berdiri atau berada berdampingan dengan orang asli tersebut.
+3. Keterangan Pahlawan: ${hero.context}. Pakaian dan wajah ${hero.name} HARUS sangat akurat secara historis.
+4. Pose & Interaksi: Keduanya ${pose}.
+5. Nuansa Visual: Sesuaikan pencahayaan, kontras, dan bayangan agar kedua tokoh terlihat benar-benar berada di tempat yang sama, membaur secara natural.`;
         }
 
         async function processImage(isRandomize = false) {
@@ -535,16 +389,23 @@ Instruksi Penting:
             generateBtn.disabled = true;
             randomizeBtn.disabled = true;
             
+            // UI State adjustments
             outputSection.classList.remove('hidden');
             outputSection.classList.add('flex');
             loadingState.classList.remove('hidden');
+            loadingState.classList.add('flex');
             errorState.classList.add('hidden');
             resultState.classList.add('hidden');
 
             const pose = POSES[Math.floor(Math.random() * POSES.length)];
             const promptText = buildPrompt(selectedHeroId, pose);
             
-            loadingText.textContent = isRandomize ? "Mencari gaya dan ekspresi baru..." : "AI sedang menyatukan foto Anda dengan Pahlawan...";
+            loadingText.textContent = isRandomize ? "Menciptakan gaya dan ekspresi baru..." : "AI sedang menyatukan foto Anda dengan Pahlawan...";
+            outputSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // API Key di-set menjadi string kosong, lingkungan/platform akan menyediakannya secara dinamis (Auto-Inject)
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent?key=${apiKey}`;
 
             const payload = {
                 contents: [{
@@ -565,12 +426,18 @@ Instruksi Penting:
             };
 
             try {
-                const result = await fetchWithRetry(getApiUrl(), {
+                const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
+                if (!response.ok) {
+                    const errDetail = await response.text();
+                    throw new Error(`Gagal menghubungi AI. Status: ${response.status}`);
+                }
+
+                const result = await response.json();
                 const part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
                 
                 if (part && part.inlineData && part.inlineData.data) {
@@ -582,23 +449,21 @@ Instruksi Penting:
                     downloadLink.href = imageUrl;
                     
                     const hero = HEROES.find(h => h.id === selectedHeroId);
-                    resultDescription.innerHTML = `Bersama <strong>${hero.name}</strong>.<br>Ekspresi: <em>"${pose}"</em>`;
+                    resultDescription.innerHTML = `Foto kebersamaan bersama <strong>${hero.name}</strong>.<br><span class="text-sm italic text-slate-500">Pose: "${pose}"</span>`;
 
                     loadingState.classList.add('hidden');
+                    loadingState.classList.remove('flex');
                     resultState.classList.remove('hidden');
                     resultState.classList.add('flex');
-                    outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    
+                    setTimeout(() => outputSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
                 } else {
-                    throw new Error("Format respons API tidak sesuai atau gambar gagal dibuat.");
+                    throw new Error("Format respons AI tidak dikenali atau gambar ditolak oleh filter keamanan.");
                 }
 
             } catch (error) {
                 console.error("Generation Error:", error);
-                if (error.message === "API_KEY_ERROR") {
-                    showAppError("API Key tidak valid atau kosong. Silakan buka pengaturan (ikon gerigi) untuk mengisi ulang API Key.");
-                } else {
-                    showAppError("Gagal memproses gambar. Layanan mungkin sedang sibuk atau terjadi kesalahan sistem.");
-                }
+                showAppError(error.message || "Gagal memproses gambar. Layanan mungkin sedang sibuk.");
             } finally {
                 isProcessing = false;
                 generateBtn.disabled = false;
@@ -608,6 +473,7 @@ Instruksi Penting:
 
         function showAppError(message) {
             loadingState.classList.add('hidden');
+            loadingState.classList.remove('flex');
             resultState.classList.add('hidden');
             outputSection.classList.remove('hidden');
             outputSection.classList.add('flex');
@@ -615,7 +481,7 @@ Instruksi Penting:
             errorMessage.textContent = message;
         }
 
-        // Run
+        // Initialize application
         init();
     </script>
 </body>
